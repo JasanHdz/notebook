@@ -1,0 +1,7 @@
+{
+  "name": "rest-server-ts",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Jasan Hernández <jasan814@gmail.com>",
+  "license": "MIT"
+}
