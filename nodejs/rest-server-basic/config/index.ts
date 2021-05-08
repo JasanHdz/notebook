@@ -8,6 +8,7 @@ interface configMap {
   dbPassword: string,
   dbHost: string,
   dbName: string,
+  jwtSecret: string
 }
 
 export const config: configMap = {
@@ -15,5 +16,6 @@ export const config: configMap = {
   dbUser: process.env.DB_USER || '',
   dbPassword: process.env.DB_PASSWORD || '',
   dbHost: process.env.DB_HOST || '',
-  dbName: process.env.DB_NAME || ''
+  dbName: process.env.DB_NAME || '',
+  jwtSecret: process.env.SECRET_JWT || ''
 }

@@ -1,13 +1,15 @@
 import express, { Application } from 'express'
 import cors from 'cors'
 import userRouter from '../routes/user-route'
+import authRouter from '../routes/auth-route'
 import DBConnection from '../database/config'
 
 export default class Server {
   private app: Application
   private port: string
   private apiPaths = {
-    users: '/api/users'
+    users: '/api/users',
+    auth: '/api/auth'
   }
   constructor() {
     this.app = express()
@@ -30,6 +32,7 @@ export default class Server {
   }
 
   routes() {
+    this.app.use(this.apiPaths.auth, authRouter)
     this.app.use(this.apiPaths.users, userRouter)
   }
 

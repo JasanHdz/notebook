@@ -5,7 +5,6 @@ import bcrypt from 'bcryptjs'
 export const getUsers = async (req: Request, res: Response) => {
   const { limit = 5, from = 0 } = req.query
   const query = { state: true }
-
   const [total, users] = await Promise.all([
     User.countDocuments(query),
     User.find(query)
@@ -15,7 +14,8 @@ export const getUsers = async (req: Request, res: Response) => {
 
   res.json({
     total,
-    users
+    users,
+    user: req.user
   })
 }
 

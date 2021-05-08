@@ -32,9 +32,12 @@ const UserSchema: Schema<IUser> = new Schema({
 })
 
 UserSchema.methods.toJSON = function () {
-  const { __v, password,...userProps } = this.toObject()
-
-  return userProps
+  const { __v, password, _id, ...userProps } = this.toObject()
+  
+  return {
+    uid: _id,
+    ...userProps
+  }
 }
 
 export interface IUser extends Document {

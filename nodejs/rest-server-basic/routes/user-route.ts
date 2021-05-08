@@ -1,12 +1,14 @@
 import { Router } from 'express'
 import { check } from 'express-validator'
 import { deleteUser, getUsers, postUser, putUser } from '../controllers/user-controller'
-import userValidate from '../middlewares/user-validate'
-import { validateRole, emailExist, userExistById } from '../helpers/db-validator'
+import { emailExist, userExistById, validateRole } from '../helpers/db-validator'
+import { fieldsValidate, validateJWT, hasRole, isAdminRole } from '../middlewares'
 
 const router = Router()
 
-router.get('/', getUsers)
+router.get('/', [
+  validateJWT,
+], getUsers)
 
 router.post('/', [
   check('name', 'El nombre no es válido').not().isEmpty(),
@@ -15,20 +17,23 @@ router.post('/', [
   check('password', 'El password debe ser de más de 6 letras').isLength({ min: 6 }),
   // check('role', 'No es un role válido').isIn(['ADMIN_ROLE', 'USER_ROLE']),
   check('role').custom(validateRole),
-  userValidate
+  fieldsValidate
 ], postUser)
 
 router.put('/:id', [
   check('id', 'No es un Id válido').isMongoId(),
   check('id').custom(userExistById),
   check('role').custom(validateRole),
-  userValidate
+  fieldsValidate
 ], putUser)
 
 router.delete('/:id', [
+  validateJWT,
+  // isAdminRole,
+  hasRole('ADMIN_ROLE', 'USER_ROLE'),
   check('id', 'No es un Id válido').isMongoId(),
   check('id').custom(userExistById),
-  userValidate
-] ,deleteUser)
+  fieldsValidate
+], deleteUser)
 
 export default router
